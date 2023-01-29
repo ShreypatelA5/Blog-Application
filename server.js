@@ -11,7 +11,7 @@ function onHttpStart() {
 
 app.use(express.static("public"));
 // setup a 'route' to listen on the default url path (http://localhost)
-app.get("/", function(){
+app.get("/about", function(){
   //res.redirect('/views/about.html');
 });
 
