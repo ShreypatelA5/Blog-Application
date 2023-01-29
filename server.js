@@ -11,7 +11,7 @@ function onHttpStart() {
 // setup a route on the 'root' of the url
 // IE: http://localhost:8080/
 app.get("/", (req, res) => {
-  res.send('/views/about.html');
+  res.send("/views/about.html");
 });
 
 // now add a route for the /headers page
