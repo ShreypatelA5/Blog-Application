@@ -7,7 +7,8 @@ var HTTP_PORT = process.env.PORT || 8080;
 function onHttpStart() {
   console.log("Express http server listening on: " + HTTP_PORT);
 }
-
+app.use(express.static("views/about.html"));
+app.get("/", (req,res))
 app.use(express.static('/views/about.html'));
 // setup a 'route' to listen on the default url path (http://localhost)
 app.get("/about",function(res){
