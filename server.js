@@ -11,14 +11,14 @@ function onHttpStart() {
 // setup a route on the 'root' of the url
 // IE: http://localhost:8080/
 app.get("/", (req, res) => {
-  res.send("<h1>Welcome to my simple website</h1><p>Be sure to visit the <a href='/headers'>headers page</a> to see what headers were sent from your browser to the server!</p>");
+  res.send('/views/about.html');
 });
 
 // now add a route for the /headers page
 // IE: http://localhost:8080/headers
-app.get("/headers", (req, res) => {
+app.get("/about", (req, res) => {
   const headers = req.headers;
-  res.send(headers);
+  res.send(/views/about.html);
 });
 
 // This use() will not allow requests to go beyond it
