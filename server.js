@@ -8,7 +8,7 @@ function onHttpStart() {
   console.log("Express http server listening on: " + HTTP_PORT);
 }
 
-app.use(express.static('about.html'));
+app.use(express.static('/views/about.html'));
 // setup a 'route' to listen on the default url path (http://localhost)
 app.get("/about",function(res){
     res.redirect('/views/about.html');
