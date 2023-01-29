@@ -9,14 +9,15 @@ function onHttpStart() {
     console.log("Express http server listening on: " + HTTP_PORT);
 }
 
+app.use(express.static("public"));
 // setup a 'route' to listen on the default url path (http://localhost)
-app.get("/", function(res){
-  res.redirect('/views/about.html');
+app.get("/", function(){
+  //res.redirect('/views/about.html');
 });
 
 // setup another route to listen on /about
 app.get("/about", function(req,res){
-    res.sendFile(path.join(__dirname, "/views/about.html"));
+  res.redirect('/views/about.html');
 });
 
 // setup http server to listen on HTTP_PORT
