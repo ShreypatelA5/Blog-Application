@@ -10,7 +10,7 @@ function onHttpStart() {
 app.use(express.static('views'));
 // setup a 'route' to listen on the default url path (http://localhost)
 app.get("/", function(req,res){
-    res.direct('about.html');
+    res.direct('/views/about.html');
 });
 
 // setup another route to listen on /about
