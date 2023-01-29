@@ -15,7 +15,7 @@ app.get("/about", function(req,res){
 
 // setup another route to listen on /about
 app.get("/about", function(req,res){
-    res.send("<h3>About</h3>");
+    res.send("about.html");
 });
 
 // setup http server to listen on HTTP_PORT
