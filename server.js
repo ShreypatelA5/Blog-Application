@@ -16,7 +16,7 @@ app.get("/", function(req,res){
 
 // setup another route to listen on /about
 app.get("/about", function(req,res){
-    res.send("<h3>About</h3>");
+   return res.redirect('/views/about.html')
 });
 
 app.listen(HTTP_PORT, onHttpStart);
