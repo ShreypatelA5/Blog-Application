@@ -1,19 +1,12 @@
-var express = require("express");
-var app = express();
+const express = require('express');
+const app = express();
 
-var HTTP_PORT = process.env.PORT || 8080;
-
-// call this function after the http server starts listening for requests
-function onHttpStart() {
-  console.log("Express http server listening on: " + HTTP_PORT);
-}
-app.use(express.static('about.html'));
-// setup a 'route' to listen on the default url path (http://localhost)
-app.get("/about", function(req,res){
-    res.redirect('/views/about.html');
+app.get('/myapp/', function(req, res){
+    res.send("Hello from the root application URL");
 });
 
-// setup another route to listen on /abo
+app.get('/myapp/test/', function(req, res){
+    res.send("Hello from the 'test' URL");
+});
 
-// setup http server to listen on HTTP_PORT
-app.listen(HTTP_PORT, onHttpStart);
+app.listen(0, () => console.log('Application is running'));
