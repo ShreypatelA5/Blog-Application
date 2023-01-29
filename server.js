@@ -11,7 +11,7 @@ function onHttpStart() {
 
 // setup a 'route' to listen on the default url path (http://localhost)
 app.get("/", function(res){
- return res.redirect('/views/about.html');
+  res.redirect('/views/about.html');
 });
 
 // setup another route to listen on /about
