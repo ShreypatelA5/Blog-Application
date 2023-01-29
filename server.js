@@ -11,3 +11,5 @@ function onHttpStart() {
 res.redirect("/about", function(req,res){
     res.send("/views/about.html");
 });
+
+app.listen(HTTP_PORT, onHttpStart);
