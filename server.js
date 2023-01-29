@@ -8,7 +8,7 @@ function onHttpStart() {
   console.log("Express http server listening on: " + HTTP_PORT);
 }
 
-app.use(express.static('public'));
+app.use(express.static('views'));
 
 app.get("/", function(req,res){
     res.send("Hello World<br /><a href='/about'>Go to the about page</a>");
