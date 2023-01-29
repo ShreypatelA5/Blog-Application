@@ -11,7 +11,8 @@ function onHttpStart() {
 app.use(express.static('views'));
 
 app.get("/", function(req,res){
-    res.send("Hello World<br /><a href='/about'>Go to the about page</a>");
+  return res.redirect('/views/about.html')
+    //res.send("Hello World<br /><a href='/about'>Go to the about page</a>");
 });
 
 // setup another route to listen on /about
