@@ -10,8 +10,8 @@ function onHttpStart() {
 }
 
 // setup a 'route' to listen on the default url path (http://localhost)
-app.get("/about", function(req,res){
-  res.sendFile(path.join(__dirname, "/views/about.html"));
+app.get("/", function(res){
+ return res.redirect('/views/about.html');
 });
 
 // setup another route to listen on /about
