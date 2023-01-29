@@ -18,3 +18,5 @@ app.get("/", function(req,res){
 app.get("/about", function(req,res){
     res.send("<h3>About</h3>");
 });
+
+app.listen(HTTP_PORT, onHttpStart);
