@@ -4,7 +4,7 @@ var PORT = 3000;
 app.use(express.static('views'));
 // Without middleware
 app.get('/', function(req, res){
-    res.sendFile(process.cwd() + '/views/about.html');
+    res.sendFile(process.cwd() + 'WEB322-APP/views/about.html');
   });
   
 app.listen(PORT, function(err){
