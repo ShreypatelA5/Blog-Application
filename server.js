@@ -26,7 +26,7 @@ app.get("/about", function (req, res) {
 
 app.get('/blog', (req, res) => {
   const posts = blogService.getPublishedPosts();
-  res.json(posts);
+  res.json(data/posts);
 });
 // setup http server to listen on HTTP_PORT
 app.listen(HTTP_PORT, onHttpStart);
