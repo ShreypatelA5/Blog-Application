@@ -58,8 +58,8 @@ const getCategories = () => {
 module.exports = {
    init,
    getPosts,
-  getCategories,
-  getAllPosts,
-getAllCategories,
-getPublishedPosts
+   getCategories,
+   getAllPosts,
+   getAllCategories,
+   getPublishedPosts
  };
