@@ -52,6 +52,16 @@ blogService.initialize()
   console.error("Unable to start the server:", err);
 });
 
+app.get('/categories', (req, res) => {
+  blogService.getCategories()
+    .then((data) => {
+      res.json({categories: data});
+    })
+    .catch((err) => {
+      res.status(500).json({message: err});
+    });
+});
+
 
 // setup http server to listen on HTTP_PORT
 //app.listen(HTTP_PORT, onHttpStart);
