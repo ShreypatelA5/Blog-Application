@@ -110,17 +110,6 @@ const getsAllPosts = () => {
       });
       };
 
-      app.get('/categories', (req, res) => {
-        blogService.getCategories()
-          .then((data) => {
-            res.json({categories: data});
-          })
-          .catch((err) => {
-            res.status(500).json({message: err});
-          });
-      });
-      
-
 module.exports = {
   init,
   getPosts,
