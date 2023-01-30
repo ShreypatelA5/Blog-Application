@@ -13,18 +13,15 @@ console.error(`Error: The file ${filePath} could not be found`);
 }
 };
 
-module.exports = {
-getPublishedPosts,
-};
+
 
 //Return JSON format to POSTS
-
-
 function getAllPosts() {
   return JSON.parse(fs.readFileSync('./data/posts.json'));
 }
 
 module.exports = {
-  getAllPosts
+    getPublishedPosts,
+    getAllPosts
 };
 
