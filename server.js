@@ -24,6 +24,7 @@ app.get('/blog', (req, res) => {
   const publishedPosts = blogService.getPublishedPosts();
   res.json(publishedPosts);
   });
+  
 app.get('/posts', (req, res) => {
   const posts = blogService.getAllPosts();
   res.json(posts);
