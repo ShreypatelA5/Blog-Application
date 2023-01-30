@@ -21,9 +21,9 @@ app.get("/about", function (req, res) {
 });
 
 app.get('/blog', (req, res) => {
-  res.send('TODO: get all posts who have published==true');
-});
-
+  const publishedPosts = blogService.getPublishedPosts();
+  res.json(publishedPosts);
+  });
 app.get('/posts', (req, res) => {
   const posts = blogService.getAllPosts();
   res.json(posts);
