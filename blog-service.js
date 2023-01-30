@@ -22,10 +22,43 @@ function getAllCategories() {
     return JSON.parse(fs.readFileSync('./data/categories.json'));
 }
 
+
+let posts = [];
+let categories = [];
+
+const readData = (fileName) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(`./data/${fileName}.json`, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(JSON.parse(data));
+      }
+    });
+  });
+};
+
+const init = async () => {
+  try {
+    posts = await readData('posts');
+    categories = await readData('categories');
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const getPosts = () => {
+  return posts;
+};
+
+const getCategories = () => {
+  return categories;
+};
+
 module.exports = {
-    getPublishedPosts,
-    getAllPosts,
-    getAllCategories
+  init,
+  getPosts,
+  getCategories,
 };
 
 
