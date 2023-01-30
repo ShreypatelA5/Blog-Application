@@ -35,7 +35,9 @@ app.get('/blog', (req, res) => {
     res.json(posts);
   });
 
-
+  app.use(function(req, res, next) {
+    res.status(404).send("Error Code 404 : Page Not Found");
+  });
   
 // setup http server to listen on HTTP_PORT
 app.listen(HTTP_PORT, onHttpStart);
