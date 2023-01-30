@@ -20,13 +20,14 @@ app.get("/about", function (req, res) {
   res.sendFile(__dirname + "/views/about.html");
 });
 
-//app.get('/blog', (req, res) => {
- // res.send('TODO: get all posts who have published==true');
-//});
-
 app.get('/blog', (req, res) => {
-  const posts = blogService.getPublishedPosts();
-  res.json(data/posts);
+  res.send('TODO: get all posts who have published==true');
 });
+
+app.get('/posts', (req, res) => {
+  const posts = blogService.getAllPosts();
+  res.json(posts);
+});
+
 // setup http server to listen on HTTP_PORT
 app.listen(HTTP_PORT, onHttpStart);
