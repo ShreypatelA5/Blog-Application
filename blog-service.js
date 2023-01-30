@@ -22,10 +22,51 @@ function getAllCategories() {
     return JSON.parse(fs.readFileSync('./data/categories.json'));
 }
 
-module.exports = {
-    getPublishedPosts,
-    getAllPosts,
-    getAllCategories
+
+let posts = [];
+let categories = [];
+
+const getPosts = () => {
+  return new Promise((resolve, reject) => {
+    fs.readFile('./data/posts.json', 'utf8', (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        posts = JSON.parse(data);
+        resolve(posts);
+      }
+    });
+  });
 };
 
+const getCategories = () => {
+  return new Promise((resolve, reject) => {
+    fs.readFile('./data/categories.json', 'utf8', (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        categories = JSON.parse(data);
+        resolve(categories);
+      }
+    });
+  });
+};
 
+const getPublishedPosts = () => {
+  return new Promise((resolve, reject) => {
+    getPosts()
+      .then(posts => {
+        const publishedPosts = posts.filter(post => post.published);
+        resolve(publishedPosts);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+};
+
+module.exports = {
+  getPosts,
+  getCategories,
+  getPublishedPosts,
+};
