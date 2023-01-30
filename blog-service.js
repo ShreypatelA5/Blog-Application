@@ -1,3 +1,4 @@
+//Retun JSON format to BLOG
 const fs = require('fs');
 
 const getPublishedPosts = () => {
@@ -16,3 +17,7 @@ module.exports = {
 getPublishedPosts,
 };
 
+//Return JSON format to POSTS
+function getAllPosts() {
+    return JSON.parse(fs.readFileSync('./data/posts.json'));
+  }

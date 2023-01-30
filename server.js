@@ -29,5 +29,7 @@ app.get('/posts', (req, res) => {
   res.json(posts);
 });
 
+
+
 // setup http server to listen on HTTP_PORT
 app.listen(HTTP_PORT, onHttpStart);
