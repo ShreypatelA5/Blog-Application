@@ -35,8 +35,8 @@ app.get('/blog', (req, res) => {
     res.json(posts);
   });
 
-  app.use(function(req, res, next) {
-    res.status(404).send("Error Code 404 : Page Not Found");
+  app.use((req, res, next) => {
+    res.status(404).sendFile(path.join(__dirname, 'views', '404.jpeg'));
   });
   
 // setup http server to listen on HTTP_PORT
