@@ -20,5 +20,9 @@ app.get("/about", function (req, res) {
   res.sendFile(__dirname + "/views/about.html");
 });
 
+app.get('/blog', (req, res) => {
+  res.send('TODO: get all posts who have published==true');
+});
+
 // setup http server to listen on HTTP_PORT
 app.listen(HTTP_PORT, onHttpStart);
