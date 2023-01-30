@@ -22,6 +22,12 @@ function getAllCategories() {
     return JSON.parse(fs.readFileSync('./data/categories.json'));
 }
 
+module.exports = {
+    init,
+    getPosts,
+    getCategories,
+  };
+  
 
 let posts = [];
 let categories = [];
@@ -55,10 +61,5 @@ const getCategories = () => {
   return categories;
 };
 
-module.exports = {
-  init,
-  getPosts,
-  getCategories,
-};
 
 
