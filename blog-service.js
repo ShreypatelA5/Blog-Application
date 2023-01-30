@@ -28,3 +28,7 @@ module.exports = {
     getAllCategories
 };
 
+app.use(function(req, res, next) {
+    res.status(404).send("Page Not Found");
+  });
+  
