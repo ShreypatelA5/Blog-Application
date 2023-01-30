@@ -12,7 +12,11 @@ function onHttpStart() {
 app.use(express.static("public"));
 // setup a 'route' to listen on the default url path (http://localhost)
 app.get("/", function (req, res) {
-  res.redirect("about.html");
+  res.redirect("/about");
+});
+
+app.get("/about", function (req, res) {
+  res.sendFile(__dirname + "/views/about.html");
 });
 
 // setup http server to listen on HTTP_PORT
