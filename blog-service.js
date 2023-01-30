@@ -62,4 +62,8 @@ const getCategories = () => {
 };
 
 
-
+module.exports = {
+   init,
+  // getPosts,
+ //  getCategories
+ };
