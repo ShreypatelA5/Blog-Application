@@ -40,5 +40,18 @@ app.get('/blog', (req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'views', '404.jpeg'));
   });
   
+
+  
+blogService.initialize()
+.then(() => {
+  app.listen(HTTP_PORT, () => {
+    console.log("Server started on port 8080");
+  });
+})
+.catch(err => {
+  console.error("Unable to start the server:", err);
+});
+
+
 // setup http server to listen on HTTP_PORT
 app.listen(HTTP_PORT, onHttpStart);
