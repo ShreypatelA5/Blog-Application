@@ -23,7 +23,6 @@ function getAllCategories() {
 }
  
 module.exports = {
-   init,
    getPosts,
    getCategories
  };
