@@ -1,5 +1,7 @@
 //Retun JSON format to BLOG
 const fs = require('fs');
+let posts = [];
+let categories = [];
 
 const getPublishedPosts = () => {
 const filePath = './data/posts.json';
@@ -21,16 +23,6 @@ function getAllPosts() {
 function getAllCategories() {
     return JSON.parse(fs.readFileSync('./data/categories.json'));
 }
-
-module.exports = {
-    getPosts,
-    getCategories,
-    getPublishedPosts,
-  };
-  
-
-let posts = [];
-let categories = [];
 
 const getPosts = () => {
   return new Promise((resolve, reject) => {
