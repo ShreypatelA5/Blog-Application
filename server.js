@@ -54,4 +54,4 @@ blogService.initialize()
 
 
 // setup http server to listen on HTTP_PORT
-app.listen(HTTP_PORT, onHttpStart);
+//app.listen(HTTP_PORT, onHttpStart);
