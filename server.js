@@ -1,3 +1,18 @@
+/*********************************************************************************
+* WEB322 – Assignment 02
+* I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part
+* of this assignment has been copied manually or electronically from any other source
+* (including 3rd party web sites) or distributed to other students.
+*
+* Name: Shrey Patel Student ID: 158379214 Date: 30th January
+*
+* Cyclic Web App URL: https://distinct-veil-moth.cyclic.app
+*
+* GitHub Repository URL: https://github.com/ShreypatelA5/web322-app
+*
+********************************************************************************/
+
+
 var express = require("express");
 var app = express();
 var path = require("path");
