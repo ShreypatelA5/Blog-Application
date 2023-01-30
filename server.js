@@ -30,9 +30,6 @@ app.get('/blog', (req, res) => {
     res.json(posts);
   });
 
-  app.get('/categories', (req, res) => {
-    const categories = blogService.getAllCategories();
-    res.json(categories);
-  })
+  
 // setup http server to listen on HTTP_PORT
 app.listen(HTTP_PORT, onHttpStart);
