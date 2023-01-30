@@ -45,7 +45,7 @@ app.get('/blog', (req, res) => {
 blogService.initialize()
 .then(() => {
   app.listen(HTTP_PORT, () => {
-    console.log("Server started on port 8080");
+    console.log("Server started on port" + HTTP_PORT);
   });
 })
 .catch(err => {
