@@ -25,10 +25,11 @@ app.get('/blog', (req, res) => {
   res.json(publishedPosts);
   });
 
-app.get('/posts', (req, res) => {
-  const posts = blogService.getAllPosts();
-  res.json(posts);
-});
+  const blogService = require('./blog-service');
 
+  app.get('/posts', (req, res) => {
+    const posts = blogService.getAllPosts();
+    res.json(posts);
+  });
 // setup http server to listen on HTTP_PORT
 app.listen(HTTP_PORT, onHttpStart);

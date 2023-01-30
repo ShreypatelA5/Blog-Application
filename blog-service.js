@@ -18,6 +18,12 @@ getPublishedPosts,
 };
 
 //Return JSON format to POSTS
+const fs = require('fs');
+
 function getAllPosts() {
-    return JSON.parse(fs.readFileSync('./data/posts.json'));
-  }
+  return JSON.parse(fs.readFileSync('./data/posts.json'));
+}
+
+module.exports = {
+  getAllPosts
+};
