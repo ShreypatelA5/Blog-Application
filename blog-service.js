@@ -52,19 +52,6 @@ const getCategories = () => {
   });
 };
 
-const getPublishedPosts = () => {
-  return new Promise((resolve, reject) => {
-    getPosts()
-      .then(posts => {
-        const publishedPosts = posts.filter(post => post.published);
-        resolve(publishedPosts);
-      })
-      .catch(err => {
-        reject(err);
-      });
-  });
-};
-
 module.exports = {
   getPosts,
   getCategories,
