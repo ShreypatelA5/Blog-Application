@@ -27,3 +27,11 @@ function getAllPosts() {
 module.exports = {
   getAllPosts
 };
+
+function getAllCategories(){
+    return JSON.parse(fs.readFileSync('./data/categories.json'))
+}
+
+module.exports = {
+    getAllCategories
+};
