@@ -51,9 +51,10 @@ app.get('/blog', (req, res) => {
     res.json(posts);
   });
 
-  app.use(function(req, res) {
-    res.status(404).sendFile(__dirname + '/views/about.html');
+  app.use((req, res, next) => {
+    res.status(404).sendFile(__dirname + "/views/404-2.webp");
   });
+  
 
   
 blogService.initialize()
