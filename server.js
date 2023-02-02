@@ -4,7 +4,7 @@
 * of this assignment has been copied manually or electronically from any other source
 * (including 3rd party web sites) or distributed to other students.
 *
-* Name: Shrey Patel Student ID: 158379214 Date: 30th January
+* Name: Shrey Patel Student ID: 158379214 Date: 1st February
 *
 * Cyclic Web App URL: https://distinct-veil-moth.cyclic.app
 *
@@ -21,12 +21,12 @@ const fs = require('fs');
 
 var HTTP_PORT = process.env.PORT || 8080;
 
-app.use(express.static("public"));
-
 // call this function after the http server starts listening for requests
 function onHttpStart() {
     console.log("Express http server listening on: " + HTTP_PORT);
 }
+
+app.use(express.static("public"));
 
 // setup a 'route' to listen on the default url path (http://localhost)
 app.get("/", function (req, res) {
@@ -58,7 +58,7 @@ app.get('/blog', (req, res) => {
 
   // This function called when no any matching route found in URL
   app.use((req, res, next) => {
-    res.status(404).sendFile(__dirname + "/views/404-2.webp");
+    res.status(404).sendFile(__dirname + "/views/vecteezy_404-landing-page_6549647.jpg");
   });
   
 
@@ -108,5 +108,4 @@ app.get('/categories', (req, res) => {
       res.status(500).json({message: err});
     });
 });
-
 
