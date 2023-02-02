@@ -51,10 +51,9 @@ app.get('/blog', (req, res) => {
     res.json(posts);
   });
 
-  app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(__dirname, 'views', '404.jpeg'));
-  });
-  
+ app.use(function (err, req, res, next) {
+  res.status(404).send("Page Not Found");
+});
 
   
 blogService.initialize()
