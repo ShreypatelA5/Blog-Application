@@ -89,7 +89,7 @@ const getsAllPosts = () => {
     });
     };
 
-    const get_Categories = () => {
+    const getCategories = () => {
       return new Promise((resolve, reject) => {
       if (categories.length === 0) {
       reject("No results returned");
@@ -106,5 +106,5 @@ module.exports = {
   initialize,
   getsAllPosts,
   getPublishPosts,
-  get_Categories
+  getCategories
 };
