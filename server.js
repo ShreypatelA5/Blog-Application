@@ -52,7 +52,7 @@ app.get('/blog', (req, res) => {
   });
 
 app.use((req, res, next) => {
-    res.status(404).sendFile(__dirname + "/views/404-2.webp");
+    res.status(404).sendFile(__dirname + "/views/vecteezy_404-landing-page_6549647.jpg");
   });
   
 blogService.initialize()
