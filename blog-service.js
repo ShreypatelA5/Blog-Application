@@ -1,6 +1,6 @@
-//Retun JSON format to BLOG
 const fs = require('fs');
 
+// Getting all the publised post which are TRUE
 const getPublishedPosts = () => {
 const filePath = './data/posts.json';
 if (fs.existsSync(filePath)) {
@@ -23,11 +23,11 @@ function getAllCategories() {
     return JSON.parse(fs.readFileSync('./data/categories.json'));
 }
 
-
-//Global post and categories array type variable 
+// Global post and categories array type variable 
 let posts = [];
 let categories = [];
 
+// The function is designed to wor with the both posts and categories datasets.
 const readData = (fileName) => {
   return new Promise((resolve, reject) => {
     fs.readFile(`./data/${fileName}.json`, (err, data) => {
@@ -40,25 +40,7 @@ const readData = (fileName) => {
   });
 };
 
-const init = async () => {
-  try {
-    posts = await readData('posts');
-    categories = await readData('categories');
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-const getPosts = () => {
-  return posts;
-};
-
-const getCategories = () => {
-  return categories;
-};
-
-
-
+// Initialize() function
 const initialize = () => {
 return new Promise((resolve, reject) => {
 fs.readFile("./data/posts.json", "utf8", (err, data) => {
@@ -77,7 +59,7 @@ resolve();
 });
 };
 
-
+// getAllPosts() function
 const getsAllPosts = () => {
   return new Promise((resolve, reject) => {
   if (posts.length === 0) {
@@ -88,7 +70,7 @@ const getsAllPosts = () => {
   });
   };
 
-
+// getPublishedPosts() function
   const getPublishPosts = () => {
     return new Promise((resolve, reject) => {
     const publishedPosts = posts.filter(post => post.published === true);
@@ -100,7 +82,8 @@ const getsAllPosts = () => {
     });
     };
 
-    const get_Categories = () => {
+    // getCategories() function
+    const getCategories = () => {
       return new Promise((resolve, reject) => {
       if (categories.length === 0) {
       reject("No results returned");
@@ -111,14 +94,11 @@ const getsAllPosts = () => {
       };
 
 module.exports = {
-  init,
-  getPosts,
-  getCategories,
   getAllPosts,
   getAllCategories,
   getPublishedPosts,
   initialize,
   getsAllPosts,
   getPublishPosts,
-  get_Categories
+  getCategories
 };
