@@ -21,6 +21,8 @@ const fs = require('fs');
 
 var HTTP_PORT = process.env.PORT || 8080;
 
+app.use(express.static("public"));
+
 // call this function after the http server starts listening for requests
 function onHttpStart() {
     console.log("Express http server listening on: " + HTTP_PORT);
@@ -60,17 +62,21 @@ app.get('/blog', (req, res) => {
   });
   
 
+//Initialize the blog service 
 blogService.initialize()
 .then(() => {
+  // Start the server if the initialize() method is successful
   app.listen(HTTP_PORT, () => {
     console.log("Server started on port" + HTTP_PORT);
   });
 })
 .catch(err => {
+  // Output an error message if the initialize() method returns a
   console.error("Unable to start the server:", err);
 });
 
 
+// Make call to the service and fetch data to be returned to the client
 app.get('/blog', (req, res) => {
   blogService.getCategories()
     .then((data) => {
@@ -81,6 +87,7 @@ app.get('/blog', (req, res) => {
     });
 });
 
+// Make call to the service and fetch data to be returned to the client
 app.get('/posts', (req, res) => {
   blogService.getCategories()
     .then((data) => {
@@ -91,6 +98,7 @@ app.get('/posts', (req, res) => {
     });
 });
 
+// Make call to the service and fetch data to be returned to the client
 app.get('/categories', (req, res) => {
   blogService.getCategories()
     .then((data) => {
@@ -102,5 +110,3 @@ app.get('/categories', (req, res) => {
 });
 
 
-// setup http server to listen on HTTP_PORT
-//app.listen(HTTP_PORT, onHttpStart);
