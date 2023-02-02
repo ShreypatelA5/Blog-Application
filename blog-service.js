@@ -1,6 +1,7 @@
-//Retun JSON format to BLOG
 const fs = require('fs');
 
+
+// Getting all the publised post which are TRUE
 const getPublishedPosts = () => {
 const filePath = './data/posts.json';
 if (fs.existsSync(filePath)) {
@@ -23,11 +24,11 @@ function getAllCategories() {
     return JSON.parse(fs.readFileSync('./data/categories.json'));
 }
 
-
-//Global post and categories array type variable 
+// Global post and categories array type variable 
 let posts = [];
 let categories = [];
 
+// 
 const readData = (fileName) => {
   return new Promise((resolve, reject) => {
     fs.readFile(`./data/${fileName}.json`, (err, data) => {
@@ -40,22 +41,10 @@ const readData = (fileName) => {
   });
 };
 
-const init = async () => {
-  try {
-    posts = await readData('posts');
-    categories = await readData('categories');
-  } catch (err) {
-    console.error(err);
-  }
-};
 
-const getPosts = () => {
-  return posts;
-};
 
-const getCategories = () => {
-  return categories;
-};
+
+
 
 
 
@@ -111,9 +100,6 @@ const getsAllPosts = () => {
       };
 
 module.exports = {
-  init,
-  getPosts,
-  getCategories,
   getAllPosts,
   getAllCategories,
   getPublishedPosts,
