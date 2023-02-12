@@ -109,3 +109,9 @@ app.get('/categories', (req, res) => {
     });
 });
 
+
+// adding route to support addPost.html
+app.get('/posts/add', (req, res) => {
+  res.sendFile(path.join(__dirname, '/views/addPost.html'));
+})
+
