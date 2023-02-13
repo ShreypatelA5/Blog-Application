@@ -93,6 +93,64 @@ const getsAllPosts = () => {
       });
       };
 
+
+      const post_s = [
+        // existing posts
+      ];
+      
+      function addPost(postData) {
+        return new Promise((resolve, reject) => {
+          if (postData.published === undefined) {
+            postData.published = false;
+          } else {
+            postData.published = true;
+          }
+          postData.id = post_s.length + 1;
+          post_s.push(postData);
+          resolve(postData);
+        });
+      }
+
+      const posts = require('./posts.json');
+
+      // Function to get all posts by category
+      const getPostsByCategory = (category) => {
+        return new Promise((resolve, reject) => {
+          const filteredPosts = posts.filter(post => post.category === category);
+          if (filteredPosts.length > 0) {
+            resolve(filteredPosts);
+          } else {
+            reject("no results returned");
+          }
+        });
+      };
+      
+      // Function to get all posts by minimum date
+      const getPostsByMinDate = (minDateStr) => {
+        return new Promise((resolve, reject) => {
+          const filteredPosts = posts.filter(post => new Date(post.postDate) >= new Date(minDateStr));
+          if (filteredPosts.length > 0) {
+            resolve(filteredPosts);
+          } else {
+            reject("no results returned");
+          }
+        });
+      };
+      
+      // Function to get a single post by id
+      const getPostById = (id) => {
+        return new Promise((resolve, reject) => {
+          const post = posts.find(post => post.id === id);
+          if (post) {
+            resolve(post);
+          } else {
+            reject("no result returned");
+          }
+        });
+      };
+      
+
+
 module.exports = {
   getAllPosts,
   getAllCategories,
@@ -100,5 +158,9 @@ module.exports = {
   initialize,
   getsAllPosts,
   getPublishPosts,
-  getCategories
+  getCategories,
+  addPost: addPost,
+  getPostsByCategory,
+  getPostsByMinDate,
+  getPostById
 };
