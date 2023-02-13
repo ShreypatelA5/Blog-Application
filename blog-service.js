@@ -111,8 +111,6 @@ const getsAllPosts = () => {
         });
       }
 
-      const posts = require('./posts.json');
-
       // Function to get all posts by category
       const getPostsByCategory = (category) => {
         return new Promise((resolve, reject) => {
