@@ -13,9 +13,9 @@
 ********************************************************************************/
 
 
-var express = require("express");
+var express = require('express');
 var app = express();
-var path = require("path");
+var path = require('path');
 const blogService = require('./blog-service');
 const fs = require('fs');
 
@@ -62,7 +62,7 @@ app.get('/blog', (req, res) => {
 
   // This function called when no any matching route found in URL
   app.use((req, res, next) => {
-    res.status(404).sendFile(__dirname + "/views/vecteezy_404-landing-page_6549647.jpg");
+    res.status(404).sendFile(path.join(__dirname, '/views/vecteezy_404-landing-page_6549647.jpg'));
   });
   
 
@@ -111,7 +111,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // adding route to support addPost.html
 app.get('/posts/add', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'addPost.html'));
+  res.sendFile(path.join(__dirname, '/views/addPost.html'));
 });
 
 const upload = multer(); // no { storage: storage } since we are not using disk storage
