@@ -111,8 +111,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // adding route to support addPost.html
 app.get('/posts/add', (req, res) => {
-  res.sendFile(path.join(__dirname, '/views/addPost.html'));
-})
+  res.sendFile(path.join(__dirname, 'views', 'addPost.html'));
+});
 
 const upload = multer(); // no { storage: storage } since we are not using disk storage
 
