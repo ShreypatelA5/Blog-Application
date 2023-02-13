@@ -41,20 +41,77 @@
     </nav>
     <div class="container" style="padding-top:60px">
       <div class="row">
-        <section class="main col-md-9">
-          <article>
-          <h2>About</h2>
-          <p>Hello, I am Shrey Patel. This is part of my college assignment. For the back end site, I'm honing my web coding skills. I love to do coding and play with different types of coding languages. Currently, I am studying C++, Java script, and database management (SQL) in my course program.</p>
-          <p>Website coding is a passion of mine and it's amazing how a few lines of code can create something visually appealing and functional. I love the creative process of designing a website, from the layout and color scheme to the user experience and functionality. It is truly a form of art and a way for me to express myself.</p>
-          <p>The satisfaction I get from debugging and fixing a problem is unmatched. Every time I solve an issue or complete a task, I feel a sense of accomplishment and pride in my work. The process of coding requires critical thinking and problem-solving skills, and I find it both challenging and rewarding.</p>
-          <p>Furthermore, I appreciate the versatility of website coding. The internet is constantly growing and evolving, and with it, the possibilities for website design and functionality. I am always learning and discovering new techniques and technologies, which keeps the field exciting and never dull.</p>
-          <p>In conclusion, website coding is more than just a job for me, it's a passion. I love the creative outlet it provides, the challenges it presents, and the endless possibilities for growth and innovation. It is a true joy to work in this field and I am grateful for the opportunity to do what I love every day.</p>
-          </article>
-        </section>
-        <aside class="col-md-3">
-          <h2>Coming Soon</h2>
-          <p>Stay patient, updates are on the way...</p>
-        </aside>
+        <div class="col-md-12">
+        
+          <h2>Add Post</h2>
+
+          <br />
+  
+          <form method="post" action="/posts/add" enctype="multipart/form-data">
+  
+              <fieldset>
+                  <legend>Feature Image</legend>
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <input class="form-control" id="featureImage" name="featureImage" type="file" />
+                          </div>
+                      </div>
+                  </div>
+              </fieldset>
+              <br />
+              <fieldset>
+                <legend>Post Content</legend>
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <label for="title">Title:</label>
+                              <input class="form-control" id="title" name="title" type="text" />
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <label for="body">Body:</label>
+                             <textarea class="form-control" id="body" name="body" rows=15></textarea>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="category">Category:</label>
+                              <select class="form-control" name="category" id="category">
+                                <option value="1">Technology</option>
+                                <option value="2">Gaming</option>
+                                <option value="3">Fashion</option>
+                                <option value="4">Education</option>
+                                <option value="5">Wellness</option>
+             
+                              </select> 
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="category">Visibility:</label>
+                            <div class="checkbox">
+                              <label>
+                                <input type="checkbox" name="published" id="published"> Published
+                              </label>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+  
+              </fieldset>
+  
+              <hr />
+  
+              <input type="submit" class="btn btn-primary pull-right" value="Add Post" /><br /><br /><br />
+  
+          </form>
+      </div>
       </div>
     </div>
 
