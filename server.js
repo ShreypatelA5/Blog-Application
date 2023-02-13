@@ -107,6 +107,7 @@ app.get('/categories', (req, res) => {
     });
 });
 
+app.use(express.static(path.join(__dirname, 'public')));
 
 // adding route to support addPost.html
 app.get('/posts/add', (req, res) => {
