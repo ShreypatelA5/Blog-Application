@@ -1,10 +1,10 @@
 /*********************************************************************************
-* WEB322 – Assignment 02
+* WEB322 – Assignment 03
 * I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part
 * of this assignment has been copied manually or electronically from any other source
 * (including 3rd party web sites) or distributed to other students.
 *
-* Name: Shrey Patel Student ID: 158379214 Date: 1st February
+* Name: Shrey Patel Student ID: 158379214 Date: 15th February
 *
 * Cyclic Web App URL: https://distinct-veil-moth.cyclic.app
 *
@@ -122,6 +122,7 @@ app.get('/posts/add', (req, res) => {
   res.sendFile(path.join(__dirname, '/views/addPost.html'));
 });
 
+// adding the "Post" route
 app.post('/posts/add', upload.single('featureImage'), (req, res) => {
   if (req.file) {
     let streamUpload = (req) => {
@@ -170,7 +171,7 @@ app.post('/posts/add', upload.single('featureImage'), (req, res) => {
   }
 });
 
-
+// create post ID route
 app.get('/post/:id', async (req, res) => {
   const postId = parseInt(req.params.id);
   try {
