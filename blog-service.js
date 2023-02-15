@@ -105,6 +105,7 @@ const getsAllPosts = () => {
         });
       }
       
+// addPost function
 function addPost(postData) {
   return new Promise((resolve, reject) => {
     if (!postData.published) {
@@ -118,6 +119,7 @@ function addPost(postData) {
   });
 }
 
+// getPost by minimum date function
 function getPostsByMinDate(minDateStr) {
   return new Promise((resolve, reject) => {
     const filteredPosts = posts.filter(post => new Date(post.postDate) >= new Date(minDateStr));
@@ -129,6 +131,7 @@ function getPostsByMinDate(minDateStr) {
   });
 }
 
+// get posts by categories function
 function getPostsByCategory(category) {
   return new Promise((resolve, reject) => {
     const filteredPosts = posts.filter(post => post.category === category);
@@ -140,7 +143,7 @@ function getPostsByCategory(category) {
   });
 }
 
-
+// modules
 module.exports = {
   getAllPosts,
   getAllCategories,
