@@ -170,6 +170,7 @@ app.post('/posts/add', upload.single('featureImage'), (req, res) => {
   }
 });
 
+
 app.get('/post/:id', async (req, res) => {
   const postId = parseInt(req.params.id);
   try {
