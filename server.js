@@ -52,7 +52,6 @@ app.get("/about", function (req, res) {
   res.sendFile(__dirname + "/views/about.html");
 });
 
-
 //This function redirect the user to the blog page
 app.get('/blog', (req, res) => {
   const publishedPosts = blogService.getPublishedPosts();
