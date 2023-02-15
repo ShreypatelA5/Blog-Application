@@ -12,6 +12,7 @@
 *
 ********************************************************************************/
 
+
 var express = require('express');
 var app = express();
 var path = require('path');
@@ -78,21 +79,30 @@ app.get('/blog', (req, res) => {
 });
 
 // Make call to the service and fetch data to be returned to the client
-app.get('/posts', (req, res) => {
+app.get('/posts', async (req, res) => {
   const category = req.query.category;
   const minDate = req.query.minDate;
 
   if (category) {
-    const posts = blogService.getPostsByCategory(parseInt(category));
-    res.json(posts);
+    try {
+      const posts = await blogService.getPostsByCategory(parseInt(category));
+      res.json(posts);
+    } catch (error) {
+      res.status(404).send(error);
+    }
   } else if (minDate) {
-    const posts = blogService.getPostsByMinDate(minDate);
-    res.json(posts);
+    try {
+      const posts = await blogService.getPostsByMinDate(minDate);
+      res.json(posts);
+    } catch (error) {
+      res.status(404).send(error);
+    }
   } else {
     const posts = blogService.getAllPosts();
     res.json(posts);
   }
 });
+
 
 // Make call to the service and fetch data to be returned to the client
 app.get('/categories', (req, res) => {
@@ -160,15 +170,16 @@ app.post('/posts/add', upload.single('featureImage'), (req, res) => {
   }
 });
 
-app.get('/post/:id', (req, res) => {
+app.get('/post/:id', async (req, res) => {
   const postId = parseInt(req.params.id);
-  const post = blogService.getPostById(postId);
-  if (post) {
+  try {
+    const post = await blogService.getPostById(postId);
     res.json(post);
-  } else {
+  } catch (error) {
     res.status(404).send('Post not found');
   }
 });
+
 
  // This function called when no any matching route found in URL
  app.use((req, res, next) => {
