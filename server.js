@@ -12,7 +12,6 @@
 *
 ********************************************************************************/
 
-
 var express = require('express');
 var app = express();
 var path = require('path');
@@ -20,8 +19,18 @@ const blogService = require('./blog-service');
 const fs = require('fs');
 
 const multer = require("multer");
-const cloudinary = require('cloudinary').v2
-const streamifier = require('streamifier')
+const cloudinary = require('cloudinary').v2;
+const streamifier = require('streamifier');
+
+const upload = multer();
+let posts = [];
+
+cloudinary.config({
+  cloud_name: 'dniwkexwk',
+  api_key: '346384146174639',
+  api_secret: 'iNGot5Ot2LW8tYJfbjo_X_zA3KI',
+  secure: true
+});
 
 var HTTP_PORT = process.env.PORT || 8080;
 
@@ -49,22 +58,13 @@ app.get('/blog', (req, res) => {
   });
 
   //This function redirect the user to the posts page
-  app.get('/posts', (req, res) => {
-    const posts = blogService.getAllPosts();
-    res.json(posts);
-  });
-
+  
   //This function redirect the user to the categories page
   app.get('/categories', (req, res) => {
     const posts = blogService.getAllCategories();
     res.json(posts);
   });
 
-  // This function called when no any matching route found in URL
-  app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(__dirname, '/views/vecteezy_404-landing-page_6549647.jpg'));
-  });
-  
 
 // Make call to the service and fetch data to be returned to the client
 app.get('/blog', (req, res) => {
@@ -78,21 +78,19 @@ app.get('/blog', (req, res) => {
 });
 
 // Make call to the service and fetch data to be returned to the client
-app.get("/posts", (req, res) => {
+app.get('/posts', (req, res) => {
   const category = req.query.category;
   const minDate = req.query.minDate;
+
   if (category) {
-    blogService.getPostsByCategory(category).then(posts => {
-      res.json(posts);
-    });
+    const posts = blogService.getPostsByCategory(parseInt(category));
+    res.json(posts);
   } else if (minDate) {
-    blogService.getPostsByMinDate(minDate).then(posts => {
-      res.json(posts);
-    });
+    const posts = blogService.getPostsByMinDate(minDate);
+    res.json(posts);
   } else {
-    blogService.getPosts().then(posts => {
-      res.json(posts);
-    });
+    const posts = blogService.getAllPosts();
+    res.json(posts);
   }
 });
 
@@ -114,30 +112,17 @@ app.get('/posts/add', (req, res) => {
   res.sendFile(path.join(__dirname, '/views/addPost.html'));
 });
 
-const upload = multer(); // no { storage: storage } since we are not using disk storage
-
-cloudinary.config({
-  cloud_name: 'dniwkexwk',
-  api_key: '346384146174639', 
-  api_secret: 'iNGot5Ot2LW8tYJfbjo_X_zA3KI',
-   secure: true
-});
-
-
-app.post('/post/add', upload.single('featureImage'), (req, res) => {
-  let imageUrl = '';
+app.post('/posts/add', upload.single('featureImage'), (req, res) => {
   if (req.file) {
     let streamUpload = (req) => {
       return new Promise((resolve, reject) => {
-        let stream = cloudinary.uploader.upload_stream(
-          (error, result) => {
-            if (result) {
-              resolve(result);
-            } else {
-              reject(error);
-            }
+        let stream = cloudinary.uploader.upload_stream((error, result) => {
+          if (result) {
+            resolve(result);
+          } else {
+            reject(error);
           }
-        );
+        });
         streamifier.createReadStream(req.file.buffer).pipe(stream);
       });
     };
@@ -147,78 +132,48 @@ app.post('/post/add', upload.single('featureImage'), (req, res) => {
       return result;
     }
     upload(req).then((uploaded) => {
-      imageUrl = uploaded.url;
-      processPost(imageUrl);
+      processPost(uploaded.url);
     });
   } else {
-    processPost(imageUrl);
+    processPost('');
   }
 
   function processPost(imageUrl) {
     req.body.featureImage = imageUrl;
-    // TODO: Process the req.body and add it as a new Blog Post before redirecting to /posts
+
+    const published = req.body.published !== undefined;
+
+  // Create a new blog post object
+  const newPost = {
+    id: posts.length + 1,
+    title: req.body.title,
+    content: req.body.content,
+    published: published,
+    featureImage: imageUrl
+  };
+
+  // Add the new post to the array of posts
+  posts.push(newPost);
+
+  // Redirect to the /posts route
+  res.redirect('/posts');
   }
 });
 
-// To correctly add the new blog post before redirecting the user 
-app.post('/posts/add', (req, res) => {
-  const postData = req.body;
-  blogService
-    .addPost(postData)
-    .then(post => {
-      res.redirect('/posts');
-    })
-    .catch(error => {
-      // handle error
-    });
-});
-
-// 
-app.use(express.json());
-
-app.get('/posts', (req, res) => {
-  if (category) {
-    // Return all posts with the specified category
-    blogService.getPostsByCategory(category)
-      .then((posts) => {
-        res.send(posts);
-      })
-      .catch((error) => {
-        res.status(500).send({ error: error });
-      });
-  } else if (minDate) {
-    // Return all posts with postDate equal or greater than minDate
-    blogService.getPostsByMinDate(minDate)
-      .then((posts) => {
-        res.send(posts);
-      })
-      .catch((error) => {
-        res.status(500).send({ error: error });
-      });
-  } else {
-    // Return all posts without any filter
-    blogService.getPosts()
-      .then((posts) => {
-        res.send(posts);
-      })
-      .catch((error) => {
-        res.status(500).send({ error: error });
-      });
-  }
-});
-
-// "/post/value" route
 app.get('/post/:id', (req, res) => {
-  const postId = req.params.id;
+  const postId = parseInt(req.params.id);
   const post = blogService.getPostById(postId);
-
-  if (!post) {
-    return res.status(404).send({ error: 'Post not found' });
+  if (post) {
+    res.json(post);
+  } else {
+    res.status(404).send('Post not found');
   }
-
-  return res.send({ post });
 });
 
+ // This function called when no any matching route found in URL
+ app.use((req, res, next) => {
+  res.status(404).sendFile(path.join(__dirname, '/views/vecteezy_404-landing-page_6549647.jpg'));
+});
 
 //Initialize the blog service 
 blogService.initialize()
@@ -232,4 +187,3 @@ blogService.initialize()
   // Output an error message if the initialize() method returns a
   console.error("Unable to start the server:", err);
 });
-

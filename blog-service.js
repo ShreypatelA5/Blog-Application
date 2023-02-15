@@ -5,7 +5,7 @@ const getPublishedPosts = () => {
 const filePath = './data/posts.json';
 if (fs.existsSync(filePath)) {
 const rawData = fs.readFileSync(filePath);
-const posts = JSON.parse(rawData);
+const posts = require('./data/posts.json');
 const publishedPosts = posts.filter(post => post.published === true);
 return publishedPosts;
 } else {
@@ -93,60 +93,52 @@ const getsAllPosts = () => {
       });
       };
 
-
-      const post_s = [
-        // existing posts
-      ];
-      
-      function addPost(postData) {
+      // getPostById(postId) function
+      function getPostById(id) {
         return new Promise((resolve, reject) => {
-          if (postData.published === undefined) {
-            postData.published = false;
-          } else {
-            postData.published = true;
-          }
-          postData.id = post_s.length + 1;
-          post_s.push(postData);
-          resolve(postData);
-        });
-      }
-
-      // Function to get all posts by category
-      const getPostsByCategory = (category) => {
-        return new Promise((resolve, reject) => {
-          const filteredPosts = posts.filter(post => post.category === category);
-          if (filteredPosts.length > 0) {
-            resolve(filteredPosts);
-          } else {
-            reject("no results returned");
-          }
-        });
-      };
-      
-      // Function to get all posts by minimum date
-      const getPostsByMinDate = (minDateStr) => {
-        return new Promise((resolve, reject) => {
-          const filteredPosts = posts.filter(post => new Date(post.postDate) >= new Date(minDateStr));
-          if (filteredPosts.length > 0) {
-            resolve(filteredPosts);
-          } else {
-            reject("no results returned");
-          }
-        });
-      };
-      
-      // Function to get a single post by id
-      const getPostById = (id) => {
-        return new Promise((resolve, reject) => {
-          const post = posts.find(post => post.id === id);
+          const post = posts.find(post => post.id == id);
           if (post) {
             resolve(post);
           } else {
             reject("no result returned");
           }
         });
-      };
+      }
       
+function addPost(postData) {
+  return new Promise((resolve, reject) => {
+    if (!postData.published) {
+      postData.published = false;
+    } else {
+      postData.published = true;
+    }
+    postData.id = posts.length + 1;
+    posts.push(postData);
+    resolve(postData);
+  });
+}
+
+function getPostsByMinDate(minDateStr) {
+  return new Promise((resolve, reject) => {
+    const filteredPosts = posts.filter(post => new Date(post.postDate) >= new Date(minDateStr));
+    if (filteredPosts.length === 0) {
+      reject('no results returned');
+    } else {
+      resolve(filteredPosts);
+    }
+  });
+}
+
+function getPostsByCategory(category) {
+  return new Promise((resolve, reject) => {
+    const filteredPosts = posts.filter(post => post.category === category);
+    if (filteredPosts.length > 0) {
+      resolve(filteredPosts);
+    } else {
+      reject('No results returned');
+    }
+  });
+}
 
 
 module.exports = {
@@ -157,8 +149,8 @@ module.exports = {
   getsAllPosts,
   getPublishPosts,
   getCategories,
-  addPost: addPost,
+  getPostById,
+  addPost,
   getPostsByCategory,
-  getPostsByMinDate,
-  getPostById
+  getPostsByMinDate
 };
