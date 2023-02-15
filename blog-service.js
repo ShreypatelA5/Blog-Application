@@ -5,7 +5,7 @@ const getPublishedPosts = () => {
 const filePath = './data/posts.json';
 if (fs.existsSync(filePath)) {
 const rawData = fs.readFileSync(filePath);
-const posts = require('./data/posts.json');
+const posts = JSON.parse(rawData);
 const publishedPosts = posts.filter(post => post.published === true);
 return publishedPosts;
 } else {
@@ -93,57 +93,6 @@ const getsAllPosts = () => {
       });
       };
 
-      // getPostById(postId) function
-      function getPostById(id) {
-        return new Promise((resolve, reject) => {
-          const post = posts.find(post => post.id == id);
-          if (post) {
-            resolve(post);
-          } else {
-            reject("no result returned");
-          }
-        });
-      }
-      
-// addPost function
-function addPost(postData) {
-  return new Promise((resolve, reject) => {
-    if (!postData.published) {
-      postData.published = false;
-    } else {
-      postData.published = true;
-    }
-    postData.id = posts.length + 1;
-    posts.push(postData);
-    resolve(postData);
-  });
-}
-
-// getPost by minimum date function
-function getPostsByMinDate(minDateStr) {
-  return new Promise((resolve, reject) => {
-    const filteredPosts = posts.filter(post => new Date(post.postDate) >= new Date(minDateStr));
-    if (filteredPosts.length === 0) {
-      reject('no results returned');
-    } else {
-      resolve(filteredPosts);
-    }
-  });
-}
-
-// get posts by categories function
-function getPostsByCategory(category) {
-  return new Promise((resolve, reject) => {
-    const filteredPosts = posts.filter(post => post.category === category);
-    if (filteredPosts.length > 0) {
-      resolve(filteredPosts);
-    } else {
-      reject('No results returned');
-    }
-  });
-}
-
-// modules
 module.exports = {
   getAllPosts,
   getAllCategories,
@@ -151,9 +100,5 @@ module.exports = {
   initialize,
   getsAllPosts,
   getPublishPosts,
-  getCategories,
-  getPostById,
-  addPost,
-  getPostsByCategory,
-  getPostsByMinDate
+  getCategories
 };
