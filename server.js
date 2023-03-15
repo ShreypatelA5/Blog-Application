@@ -16,6 +16,7 @@ var app = express();
 var path = require("path");
 var blogService = require("./blog-service.js");
 const exphbs = require('express-handlebars');
+const handlebars = require('express-handlebars');
 var categories = require("./data/categories.json")
 var posts = require("./data/posts.json")
 
@@ -54,7 +55,35 @@ cloudinary.config({
   api_secret: 'iNGot5Ot2LW8tYJfbjo_X_zA3KI',
   secure: true
 });
+
+// To fix "active" item in navigation bar
+app.use(function(req,res,next){
+  let route = req.path.substring(1);
+  app.locals.activeRoute = "/" + (isNaN(route.split('/')[1]) ? route.replace(/\/(?!.*)/, "") : route.replace(/\/(.*)/, "")); app.locals.viewingCategory = req.query.category;
+  next();
+  });
  
+
+  // helper custom handlebars
+  app.engine('.hbs', exphbs.engine({
+    extname: '.hbs',
+    helpers: {
+        navLink: function navLink(url, options) {
+            return '<li' + ((url == app.locals.activeRoute) ? ' class="active"' : '') + '><a href="' + url + '">' + options.fn(this) + '</a></li>';
+        },
+        equal: function equal(lvalue, rvalue, options) {
+            if (arguments.length < 3) {
+                throw new Error("Handlebars Helper equal needs 2 parameters");
+            }
+            if (lvalue != rvalue) {
+                return options.inverse(this);
+            } else {
+                return options.fn(this);
+            }
+        }
+    }
+}));
+
 // get blog
 app.get("/blog", (req, res) => {
   const publishedPosts = posts.filter(post => post.published === true);
