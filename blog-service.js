@@ -1,6 +1,5 @@
 const fs = require("fs");
 
-const Sequelize = require('sequelize');
 const { resolve } = require("path");
 
 let posts = [];
