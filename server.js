@@ -184,7 +184,7 @@ app.get("/about", function(req, res) {
 });
 
  // adding route to support addPost.hbs
- app.get("/post/add", (req, res) => {
+ app.get("/posts/add", (req, res) => {
   res.render("addPost"); // assuming "addPost.hbs" is located in the "views" directory
 });
 
