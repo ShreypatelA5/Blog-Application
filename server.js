@@ -15,13 +15,26 @@ var express = require("express");
 var app = express();
 var path = require("path");
 var blogService = require("./blog-service.js");
-
+const exphbs = require('express-handlebars');
 var categories = require("./data/categories.json")
 var posts = require("./data/posts.json")
 
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
+
+
+
+// Set up handlebars engine
+app.engine(
+  ".hbs",
+  exphbs({
+    extname: ".hbs"
+  })
+);
+
+// Set 'view engine' to use handlebrs
+app.set('view engine', 'hbs');
 
 // no { storage: storage }
 const upload = multer(); 
@@ -173,9 +186,10 @@ app.post("/posts/add",upload.single("featureImage"),(req,res)=>{
   });
 
 // setup another route to listen on /about
-app.get("/about", function(req,res){
-    res.sendFile(path.join(__dirname,"/views/about.html"));
-  });
+app.get("/about", function(req, res) {
+  res.render("about");
+});
+
 
 
   app.get("*", (req, res) => {
