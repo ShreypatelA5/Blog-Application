@@ -26,15 +26,11 @@ const streamifier = require('streamifier')
 
 
 // Set up handlebars engine
-app.engine(
-  ".hbs",
-  exphbs({
-    extname: ".hbs"
-  })
-);
+app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
+
 
 // Set 'view engine' to use handlebrs
-app.set('view engine', 'hbs');
+app.set('view engine', '.hbs');
 
 // no { storage: storage }
 const upload = multer(); 
@@ -121,9 +117,9 @@ app.get("/categories", (req, res) => {
   });
 });
 
- // adding route to support addPost.html
-app.get("/posts/add",(req,res) => {
-  res.sendFile(path.join(__dirname,"/views/addPost.html"))
+ // adding route to support addPost.hbs
+ app.get("/post/add", (req, res) => {
+  res.render("addPost");
 });
 
 app.use(express.static('public'));
@@ -189,8 +185,6 @@ app.post("/posts/add",upload.single("featureImage"),(req,res)=>{
 app.get("/about", function(req, res) {
   res.render("about");
 });
-
-
 
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname,"/views/error.html"));
