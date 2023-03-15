@@ -1,12 +1,10 @@
 const fs = require("fs");
-
 const { resolve } = require("path");
 
 let posts = [];
 let categories = [];
 
-
-// Intitalization function
+// Initialize() function
 function initialize() {
   return new Promise((resolve, reject) => {
     fs.readFile("./data/posts.json", "utf8", (err, data) => {
@@ -25,7 +23,7 @@ function initialize() {
   });
 }
 
-// getAllPosts() function
+//Return JSON format to POSTS
 function getAllPosts() {
   return new Promise((resolve, reject) => {
     if (posts.length === 0) {
@@ -41,14 +39,13 @@ function getPostsByCategory(category) {
     const filteredPosts = posts.filter(post => post.category === category);
     if (filteredPosts.length > 0) {
       resolve(filteredPosts);
-    } 
-    else {
-      reject('no results returned');
+    } else {
+      reject('No results returned');
     }
   });
 }
 
-// get posts by categories function
+// getPost by minimum date function
 function getPostsByMinDate(minDateStr) {
   return new Promise((resolve, reject) => {
     const filteredPosts = posts.filter(post => new Date(post.postDate) >= new Date(minDateStr));
@@ -60,7 +57,6 @@ function getPostsByMinDate(minDateStr) {
     }
   });
 }
-
 
 // getPostById(postId) function
 function getPostById(id) {
@@ -75,11 +71,10 @@ function getPostById(id) {
   });
 }
 
-
 // addPost function
 function addPost (postData) {
   return new Promise((resolve,reject)=> {
-    //postData.published = (postData.published) ? true : false;
+   
     postData.published = Boolean(postData.published);
     postData.id = posts.length + 1;
     posts.push(postData);
@@ -98,7 +93,7 @@ function getPublishedPosts() {
   });
 }
 
- // getCategories() function
+// getCategories() function
 function getCategories() {
   return new Promise((resolve, reject) => {
     if (categories.length === 0) {
@@ -108,13 +103,14 @@ function getCategories() {
   });
 }
 
-module.exports = { 
-  initialize, 
+module.exports = 
+{ 
+  initialize,
   getAllPosts, 
   getPublishedPosts,
-  getCategories,
-  addPost,
+  getCategories, 
+  addPost, 
   getPostsByCategory, 
-  getPostsByMinDate,
+  getPostsByMinDate, 
   getPostById 
 };

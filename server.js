@@ -11,24 +11,23 @@
 * GitHub Repository URL: https://github.com/ShreypatelA5/web322-app
 *
 ********************************************************************************/
-
 var express = require("express");
 var app = express();
 var path = require("path");
 var blogService = require("./blog-service.js");
 
-var posts = require("./data/posts.json");
-var categories = require("./data/categories.json");
+var categories = require("./data/categories.json")
+var posts = require("./data/posts.json")
 
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2
-const streamifier = require('streamifier');
+const streamifier = require('streamifier')
 
 // no { storage: storage }
 const upload = multer(); 
+
 var HTTP_PORT = process.env.PORT || 8080;
 
-// blogservice initialize function
 blogService.initialize()
   .then(() => {
     app.listen(HTTP_PORT, () => {
@@ -39,17 +38,18 @@ blogService.initialize()
     console.error(`Error initializing the blog-service module: ${error}`);
   });
 
-  // Cloudinary configuration
-  cloudinary.config({
-    cloud_name: 'dniwkexwk',
-    api_key: '346384146174639',
-    api_secret: 'iNGot5Ot2LW8tYJfbjo_X_zA3KI',
-    secure: true
-  });
+
+cloudinary.config({
+  cloud_name: 'dniwkexwk',
+  api_key: '346384146174639',
+  api_secret: 'iNGot5Ot2LW8tYJfbjo_X_zA3KI',
+  secure: true
+});
  
-//This function redirect the user to the blog page  
+// get blog
 app.get("/blog", (req, res) => {
   const publishedPosts = posts.filter(post => post.published === true);
+  //res.json(publishedPosts);
   blogService.getPublishedPosts()
   .then((data) => {
     res.json(data);
@@ -59,23 +59,17 @@ app.get("/blog", (req, res) => {
   });
 });
 
-// Make call to the service and fetch data to be returned to the client
-app.get("/posts", (req, res) => {
-  if(req.query.category){
-    blogService.getPostsByCategory(req.query.category)
-    .then((data) =>{
-        if(data.length > 0){
-            res.json(data);
-        }
-        else{
-          res.status(404).json({ message: "no results" });
-        }
-    })
-    .catch(function(err){
-      res.status(404).json({ message: "no results" });
-    })
-  }
-  else if(req.query.minDate){
+// get posts with different arguments 
+app.get("/posts", async (req, res) => {
+  const category = req.query.category;
+  if (category) {
+    try {
+      const posts = await blogService.getPostsByCategory(parseInt(category));
+      res.json(posts);
+    } catch (error) {
+      res.status(404).send(error);
+    }
+   } else if(req.query.minDate){
       blogService.getPostsByMinDate(req.query.minDate)
       .then((data)=>{
           if(data.length > 0){
@@ -101,8 +95,10 @@ app.get("/posts", (req, res) => {
   }
 });
 
- //This function redirect the user to the categories page
+
+// get categories 
 app.get("/categories", (req, res) => {
+  //res.json(categories);
   blogService.getCategories()
   .then((data) => {
     res.json(data);
@@ -112,15 +108,13 @@ app.get("/categories", (req, res) => {
   });
 });
 
-
-// adding route to support addPost.html
+ // adding route to support addPost.html
 app.get("/posts/add",(req,res) => {
   res.sendFile(path.join(__dirname,"/views/addPost.html"))
 });
 
 app.use(express.static('public'));
-  
-// setup a 'route' to listen on the default url path (http://localhost)
+
 app.get("/", function(req,res){
   res.redirect("/about");
 });
@@ -177,13 +171,13 @@ app.post("/posts/add",upload.single("featureImage"),(req,res)=>{
         res.status(404).json({ error: err });
       });
   });
-  
+
 // setup another route to listen on /about
 app.get("/about", function(req,res){
     res.sendFile(path.join(__dirname,"/views/about.html"));
   });
 
-  // Setup another 
+
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname,"/views/error.html"));
   });
