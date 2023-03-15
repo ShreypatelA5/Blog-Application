@@ -117,10 +117,7 @@ app.get("/categories", (req, res) => {
   });
 });
 
- // adding route to support addPost.hbs
- app.get("/post/add", (req, res) => {
-  res.render("addPost");
-});
+
 
 app.use(express.static('public'));
 
@@ -186,6 +183,8 @@ app.get("/about", function(req, res) {
   res.render("about");
 });
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname,"/views/error.html"));
-  });
+ // adding route to support addPost.hbs
+ app.get("/post/add", (req, res) => {
+  res.render("addPost"); // assuming "addPost.hbs" is located in the "views" directory
+});
+
