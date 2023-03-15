@@ -12,191 +12,178 @@
 *
 ********************************************************************************/
 
-
-var express = require('express');
+var express = require("express");
 var app = express();
-var path = require('path');
-const blogService = require('./blog-service');
-const fs = require('fs');
+var path = require("path");
+var blogService = require("./blog-service.js");
+
+var posts = require("./data/posts.json");
+var categories = require("./data/categories.json");
 
 const multer = require("multer");
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier');
 
-const upload = multer();
-let posts = [];
-
-cloudinary.config({
-  cloud_name: 'dniwkexwk',
-  api_key: '346384146174639',
-  api_secret: 'iNGot5Ot2LW8tYJfbjo_X_zA3KI',
-  secure: true
-});
-
+// no { storage: storage }
+const upload = multer(); 
 var HTTP_PORT = process.env.PORT || 8080;
 
-// call this function after the http server starts listening for requests
-function onHttpStart() {
-    console.log("Express http server listening on: " + HTTP_PORT);
-}
+// blogservice initialize function
+blogService.initialize()
+  .then(() => {
+    app.listen(HTTP_PORT, () => {
+      console.log("Server listening on port" + HTTP_PORT);
+    });
+  })
+  .catch((error) => {
+    console.error(`Error initializing the blog-service module: ${error}`);
+  });
 
-app.use(express.static("public"));
+  // Cloudinary configuration
+  cloudinary.config({
+    cloud_name: 'dniwkexwk',
+    api_key: '346384146174639',
+    api_secret: 'iNGot5Ot2LW8tYJfbjo_X_zA3KI',
+    secure: true
+  });
+ 
+//This function redirect the user to the blog page  
+app.get("/blog", (req, res) => {
+  const publishedPosts = posts.filter(post => post.published === true);
+  blogService.getPublishedPosts()
+  .then((data) => {
+    res.json(data);
+  })
+  .catch((err) => {
+    res.status(404).json({ error: err });
+  });
+});
 
+// Make call to the service and fetch data to be returned to the client
+app.get("/posts", (req, res) => {
+  if(req.query.category){
+    blogService.getPostsByCategory(req.query.category)
+    .then((data) =>{
+        if(data.length > 0){
+            res.json(data);
+        }
+        else{
+          res.status(404).json({ message: "no results" });
+        }
+    })
+    .catch(function(err){
+      res.status(404).json({ message: "no results" });
+    })
+  }
+  else if(req.query.minDate){
+      blogService.getPostsByMinDate(req.query.minDate)
+      .then((data)=>{
+          if(data.length > 0){
+            res.json(data);
+          }
+          else{
+            res.status(404).json({ message: "no results" });
+          }
+      })
+      .catch(function(err){
+        res.status(404).json({ message: "no results" });
+      })
+  }
+  else
+  {  
+  blogService.getAllPosts()
+  .then((data) => {
+    res.json(data);
+  })
+  .catch((err) => {
+    res.json({ message: err });
+  });
+  }
+});
+
+ //This function redirect the user to the categories page
+app.get("/categories", (req, res) => {
+  blogService.getCategories()
+  .then((data) => {
+    res.json(data);
+  })
+  .catch((err) => {
+    res.json({ message: err });
+  });
+});
+
+
+// adding route to support addPost.html
+app.get("/posts/add",(req,res) => {
+  res.sendFile(path.join(__dirname,"/views/addPost.html"))
+});
+
+app.use(express.static('public'));
+  
 // setup a 'route' to listen on the default url path (http://localhost)
-app.get("/", function (req, res) {
+app.get("/", function(req,res){
   res.redirect("/about");
 });
 
-// this function redirect the user to the about page
-app.get("/about", function (req, res) {
-  res.sendFile(__dirname + "/views/about.html");
-});
-
-//This function redirect the user to the blog page
-app.get('/blog', (req, res) => {
-  const publishedPosts = blogService.getPublishedPosts();
-  res.json(publishedPosts);
-  });
-
-  //This function redirect the user to the posts page
-  
-  //This function redirect the user to the categories page
-  app.get('/categories', (req, res) => {
-    const posts = blogService.getAllCategories();
-    res.json(posts);
-  });
-
-
-// Make call to the service and fetch data to be returned to the client
-app.get('/blog', (req, res) => {
-  blogService.getCategories()
-    .then((data) => {
-      res.json({blogs: data});
-    })
-    .catch((err) => {
-      res.status(500).json({message: err});
-    });
-});
-
-// Make call to the service and fetch data to be returned to the client
-app.get('/posts', async (req, res) => {
-  const category = req.query.category;
-  const minDate = req.query.minDate;
-
-  if (category) {
-    try {
-      const posts = await blogService.getPostsByCategory(parseInt(category));
-      res.json(posts);
-    } catch (error) {
-      res.status(404).send(error);
-    }
-  } else if (minDate) {
-    try {
-      const posts = await blogService.getPostsByMinDate(minDate);
-      res.json(posts);
-    } catch (error) {
-      res.status(404).send(error);
-    }
-  } else {
-    const posts = blogService.getAllPosts();
-    res.json(posts);
-  }
-});
-
-
-// Make call to the service and fetch data to be returned to the client
-app.get('/categories', (req, res) => {
-  blogService.getCategories()
-    .then((data) => {
-      res.json({categories: data});
-    })
-    .catch((err) => {
-      res.status(500).json({message: err});
-    });
-});
-
-app.use(express.static(path.join(__dirname, 'public')));
-
-// adding route to support addPost.html
-app.get('/posts/add', (req, res) => {
-  res.sendFile(path.join(__dirname, '/views/addPost.html'));
-});
-
 // adding the "Post" route
-app.post('/posts/add', upload.single('featureImage'), (req, res) => {
-  if (req.file) {
+app.post("/posts/add",upload.single("featureImage"),(req,res)=>{
+  if(req.file){
     let streamUpload = (req) => {
-      return new Promise((resolve, reject) => {
-        let stream = cloudinary.uploader.upload_stream((error, result) => {
-          if (result) {
-            resolve(result);
-          } else {
-            reject(error);
-          }
-        });
-        streamifier.createReadStream(req.file.buffer).pipe(stream);
-      });
+    return new Promise((resolve, reject) => {
+    let stream = cloudinary.uploader.upload_stream(
+    (error, result) => {
+    if (result) {
+    resolve(result);
+    } else {
+    reject(error);
+    }
+    }
+    );
+    streamifier.createReadStream(req.file.buffer).pipe(stream);
+    });
     };
     async function upload(req) {
-      let result = await streamUpload(req);
-      console.log(result);
-      return result;
+    let result = await streamUpload(req);
+    console.log(result);
+    return result;
     }
-    upload(req).then((uploaded) => {
-      processPost(uploaded.url);
+    upload(req).then((uploaded)=>{
+    processPost(uploaded.url);
     });
-  } else {
-    processPost('');
-  }
-
-  function processPost(imageUrl) {
+   }else{
+    processPost("");
+   }
+   function processPost(imageUrl)
+   {
     req.body.featureImage = imageUrl;
-
-    const published = req.body.published !== undefined;
-
-  // Create a new blog post object
-  const newPost = {
-    id: posts.length + 1,
-    title: req.body.title,
-    content: req.body.content,
-    published: published,
-    featureImage: imageUrl
-  };
-
-  // Add the new post to the array of posts
-  posts.push(newPost);
-
-  // Redirect to the /posts route
-  res.redirect('/posts');
-  }
-});
-
-// create post ID route
-app.get('/post/:id', async (req, res) => {
-  const postId = parseInt(req.params.id);
-  try {
-    const post = await blogService.getPostById(postId);
-    res.json(post);
-  } catch (error) {
-    res.status(404).send('Post not found');
-  }
-});
-
-
- // This function called when no any matching route found in URL
- app.use((req, res, next) => {
-  res.status(404).sendFile(path.join(__dirname, '/views/vecteezy_404-landing-page_6549647.jpg'));
-});
-
-//Initialize the blog service 
-blogService.initialize()
-.then(() => {
-  // Start the server if the initialize() method is successful
-  app.listen(HTTP_PORT, () => {
-    console.log("Server started on port" + HTTP_PORT);
+    
+    blogService.addPost(req.body)
+        .then(res.redirect('/posts'))
+        .catch((err)=>
+        {
+            res.json({message: err});
+        });
+   } 
   });
-})
-.catch(err => {
-  // Output an error message if the initialize() method returns a
-  console.error("Unable to start the server:", err);
-});
+
+  // create post ID route
+  app.get('/post/:id', (req, res) => {
+    const postId = parseInt(req.params.id);
+    blogService.getPostById(postId)
+      .then((post) => {
+        res.json(post);
+      })
+      .catch((err) => {
+        res.status(404).json({ error: err });
+      });
+  });
+  
+// setup another route to listen on /about
+app.get("/about", function(req,res){
+    res.sendFile(path.join(__dirname,"/views/about.html"));
+  });
+
+  // Setup another 
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname,"/views/error.html"));
+  });
