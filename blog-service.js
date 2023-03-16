@@ -93,6 +93,17 @@ function getPublishedPosts() {
   });
 }
 
+// getPublishedPostsByCategory(category) function
+function getPublishedPostsByCategory(category) {
+  return new Promise((resolve, reject) => {
+    const filteredPosts = posts.filter(post => post.published === true && post.category === category);
+    if (filteredPosts.length === 0) {
+      return reject("no results returned");
+    }
+    resolve(filteredPosts);
+  });
+}
+
 // getCategories() function
 function getCategories() {
   return new Promise((resolve, reject) => {
@@ -103,8 +114,7 @@ function getCategories() {
   });
 }
 
-module.exports = 
-{ 
+module.exports = {
   initialize,
   getAllPosts, 
   getPublishedPosts,
@@ -112,5 +122,6 @@ module.exports =
   addPost, 
   getPostsByCategory, 
   getPostsByMinDate, 
-  getPostById 
-};
+  getPostById,
+  getPublishedPostsByCategory
+};  

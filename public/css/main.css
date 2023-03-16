@@ -6889,3 +6889,12 @@ a.list-group-item-danger.active:focus {
 .popover-title {
   border: none;
 }
+
+th, td {
+  border-bottom: 1px solid #ddd;
+}
+
+.table tbody tr {
+  margin: 0;
+  padding: 0;
+}
