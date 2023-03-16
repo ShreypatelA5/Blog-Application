@@ -11,6 +11,11 @@
       <strong>Last Updated:</strong> {{data.post.postdate}}
     </article>
   </section>
+  {{else}}
+  <div class="col-md-12 text-center">
+    <h2>{{data.message}}</h2>
+    <p>Please try another Post / Category</p>
+  </div>
   {{/if}}
   <aside class="col-md-3">
     <br /><br />
@@ -32,10 +37,3 @@
     {{/if}}
   </aside>
 </div>
-
-{{#if (not data.post)}}
-<div class="col-md-12 text-center">
-  <h2>{{data.message}}</h2>
-  <p>Please try another Post / Category</p>
-</div>
-{{/if}}
