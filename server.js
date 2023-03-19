@@ -12,7 +12,6 @@
 *
 ********************************************************************************/
 const bodyParser = require("body-parser");
-const Sequelize = require("sequelize");
 
 const pg = require("pg");
 const exphbs = require("express-handlebars");
